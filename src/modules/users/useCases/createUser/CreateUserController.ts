@@ -8,14 +8,19 @@ class CreateUserController {
   handle(request: Request, response: Response): Response {
     const { name, email } = request.body;
 
-    const user = this.createUserUseCase.execute({
-      name,
-      email,
-    });
+    try {
+      const user = this.createUserUseCase.execute({
+        name,
+        email,
+      });
 
-    console.log(user);
-
-    return response.status(201).json(user);
+      return response.status(201).json(user);
+    } catch (error) {
+      console.log(`Logando erro da aplicação: ${error}`);
+      return response.status(400).json({
+        error: error.message,
+      });
+    }
   }
 }
 
